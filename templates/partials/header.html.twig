@@ -14,10 +14,19 @@
                 </li>
             </ul>
             <ul class = "navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Mon Compte</a>
-                </li>
-                
+                {% if app.user %}
+                    <a href="{{path('account_index')}}" class="dropdown-item">Mon Compte</a>
+                    <a href="{{path('account_profile')}}" class="dropdown-item">Modifier mon profil</a>
+                    <a href="{{path('ads_create')}}" class="dropdown-item">Crééer une annonce</a>
+                    <a href="{{path('account_logout')}}" class="dropdown-item">Déconnexion</a>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{path('account_register')}}">Inscription</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{path('account_login')}}">Connexion</a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
         </nav>
