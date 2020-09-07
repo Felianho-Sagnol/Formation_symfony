@@ -11,6 +11,10 @@
                 <strong> {{ad.rooms}} chambres </strong> pour <strong> {{ ad.price }} euro / nuit </strong>
             </p>
             <a href="" class="btn btn-primary">Reserver !</a>
+            {% if app.user and app.user == ad.author %}
+                <a href="{{path('ads_edit', {'slug':ad.slug })}}" class="btn btn-secondary">Modifier l'annonce</a>
+                <a href="{{path('ads_delete',{'slug':ad.slug })}}" class="btn btn-danger mt-2">Supprimer l'annonce</a>
+            {% endif %}
         </div>
     </div>
     <div class="container mt-3">
