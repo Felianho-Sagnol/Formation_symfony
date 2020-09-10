@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reserver l'annonce {{ad.title}} !{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" 
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" 
+    integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" 
+    crossorigin="anonymous" />
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Reservez pour l'annonce {{ad.title}}</h1>
+        <p>
+            Vous êtes sur le point cette annonce de <strong>{{ad.author.firstName}} {{ad.author.lastName }}</strong>, dites nous tout et on gère le reste !
+        </p>
+        {{ form_start(form) }}
+            <div class="alert alert-light">
+                <h1>Donnez votre date d'arrivée et de sortie !</h1>
+                <div class="row">
+                    <div class="col">
+                        {{ form_row(form.startDate) }}
+                    </div>
+                    <div class="col">
+                        {{ form_row(form.endDate) }}
+                    </div>
+                </div>
+                <h5>Montant du Séjour : <span id='amount'>...</span>&euro;</h5>
+                <span id='days'>0</span> nuit(s) à {{ad.price}}
+                <h3 class='mt-3'>Vous avez un commentaire ?, Laissez le ici !</h3>
+                {{ form_row(form.comment) }}
+            </div>
+
+            <h3>Vous avez terminé ?</h3>
+            <p>Vaccances de rêve ?, Hébergemement pour le boulot ? , Nous sommes avec vous !</p>
+
+            <button type="submit" class="btn btn-success">Je reserve !</button>
+
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+  
+{% block javascripts %}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" 
+    integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" 
+    crossorigin="anonymous"></script>
+
+    <script>
+    //2020-09-06 00:00:00 	2020-09-21 00:00:
+        $(document).ready(function(){
+            $('#booking_startDate,#booking_endDate').datepicker({
+                format: 'dd/mm/yyyy',
+                datesDisabled:[
+                    {% for day in ad.notAvailableDays %}
+                        "{{ day.format('d/m/Y') }}",
+                    {% endfor %}
+                ],
+                startDate: new Date()
+            });
+
+            $('#booking_startDate,#booking_endDate').on('change',calculateAmount)
+        })
+
+        function calculateAmount(){
+
+            //on recupere les date on  calcule le nobre de nuit et on le multiplie par le prix unitaire
+            const endDate = new Date($('#booking_endDate').val().replace(/(\d+)\/(\d+)\/(\d{4})/,"$3-$2-$1"));
+            const startDate = new Date($('#booking_startDate').val().replace(/(\d+)\/(\d+)\/(\d{4})/,"$3-$2-$1"));
+            if(endDate && startDate && startDate < endDate){
+                const DAY_TIME = 24*60*60*1000;
+                const interval = endDate.getTime() - startDate.getTime();
+                const days = interval / DAY_TIME;
+                const Amount = days*{{ ad.price }}
+                $('#days').text(days);
+                $('#amount').text(Amount.toLocaleString('fr-FR'));
+            }
+        }
+    </script>
+
+{% endblock %}

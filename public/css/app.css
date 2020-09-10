@@ -28,3 +28,6 @@ div.carrousel-caption{
     max-height: 5px;
     border-radius: 50%;
 }
+.datepicker table tr td.disabled, .datepicker table tr td.disabled:hover{
+    color:firebrick !important;
+}

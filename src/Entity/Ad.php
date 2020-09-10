@@ -76,9 +76,21 @@ class Ad
      */
     private $author;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Booking::class, mappedBy="ad")
+     */
+    private $startDate;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Booking::class, mappedBy="ad")
+     */
+    private $bookings;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
+        $this->startDate = new ArrayCollection();
+        $this->bookings = new ArrayCollection();
     }
 
 
@@ -93,6 +105,32 @@ class Ad
         if(empty($this->slug)){
             $this->slug = $slugify->slugify($this->title);
         }
+    }
+
+    /**
+     * cette fonction permt d'o btenir un tanbleau des jours qui ne sont pas disponibles pour cette annonce
+     *
+     * @return array
+     */
+    public function getNotAvailableDays(){
+        $notAvailableDays = [];
+
+        foreach($this->bookings as $booking){
+            //calculer les jours qui se trouve entre la date d'arivé et de sortie
+            $resultat = range(
+                $booking->getStartDate()->getTimestamp(),
+                $booking->getEndDate()->getTimestamp(),
+                24*60*60
+            );
+
+            $days = array_map(function($daytimestamp){
+                return new \DateTime(date('Y-m-d',$daytimestamp));
+            },$resultat);
+
+            $notAvailableDays = array_merge($notAvailableDays,$days);
+        }
+
+        return $notAvailableDays;
     }
 
     public function getId(): ?int
@@ -223,6 +261,68 @@ class Ad
     public function setAuthor(?User $author): self
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Booking[]
+     */
+    public function getStartDate(): Collection
+    {
+        return $this->startDate;
+    }
+
+    public function addStartDate(Booking $startDate): self
+    {
+        if (!$this->startDate->contains($startDate)) {
+            $this->startDate[] = $startDate;
+            $startDate->setAd($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStartDate(Booking $startDate): self
+    {
+        if ($this->startDate->contains($startDate)) {
+            $this->startDate->removeElement($startDate);
+            // set the owning side to null (unless already changed)
+            if ($startDate->getAd() === $this) {
+                $startDate->setAd(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Booking[]
+     */
+    public function getBookings(): Collection
+    {
+        return $this->bookings;
+    }
+
+    public function addBooking(Booking $booking): self
+    {
+        if (!$this->bookings->contains($booking)) {
+            $this->bookings[] = $booking;
+            $booking->setAd($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBooking(Booking $booking): self
+    {
+        if ($this->bookings->contains($booking)) {
+            $this->bookings->removeElement($booking);
+            // set the owning side to null (unless already changed)
+            if ($booking->getAd() === $this) {
+                $booking->setAd(null);
+            }
+        }
 
         return $this;
     }
