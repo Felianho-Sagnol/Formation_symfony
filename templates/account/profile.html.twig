@@ -4,10 +4,35 @@
 
 {% block body %}
     <div class="container">
-        <h1>Modification du profil</h1>
+        <h1 class="my-5">Modification du profil</h1>
         {{ form_start(form) }}
-            {{ form_widget(form) }}
-            <button type="submit" class="btn btn-primary">Modifier le profil !</button>
+            <div class="row">
+                <div class="col">
+                    <div class="alert alert-light">
+                        <h2 class="alert-headind">Iformations Générals</h2>
+                        <hr>
+                        {{ form_row(form.firstName) }}
+                        {{ form_row(form.lastName) }}
+                        {{ form_row(form.email) }}
+                        {{ form_row(form.picture) }}
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="alert alert-light">
+                        <h2 class="alert-headind">Détails</h2>
+                        <hr>
+                        {{ form_row(form.introduction) }}
+                        {{ form_row(form.description) }}
+                        <hr>
+                        <p>Sauvegarder vos informations</p>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                            Modifier le profil !
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
         {{ form_end(form) }}
     </div>
 {% endblock %}

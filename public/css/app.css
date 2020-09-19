@@ -31,3 +31,17 @@ div.carrousel-caption{
 .datepicker table tr td.disabled, .datepicker table tr td.disabled:hover{
     color:firebrick !important;
 }
+ span.rating i {
+     color: goldenrod;
+ }
+div.ad-title .btn{
+    margin-top: 2em;
+    font-size: 1.5em;
+    line-height: 1.5;
+}
+.alert a{
+    text-decoration: none;
+}
+.alert .btn{
+    color: white;
+}
