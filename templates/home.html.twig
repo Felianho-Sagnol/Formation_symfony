@@ -13,100 +13,29 @@
             <a class="btn btn-primary btn-lg" href="#" role="button">Voir nos annonces!</a>
         </p>
     </div>
-    <h2 class="h1 my-5">Nos appartements</h2>
+    <h2 class="h1 my-5">Nos appartements stars</h2>
     <div class="row mt-5">
-        <div class="col-md-4">
-            <div class="card bg-lenght mb-3">
-                <div class="card header text-center">
-                    3 chambres, <strong>49&euro; / nuit</strong> <br>
-                    <small>Pas encore noté</small>
-                </div>
-                <img src="http://placehold.it/1000x400" alt="Image de l'appartement" style="height:200; width:100%; display:block">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        Appartement de ouf !
-                    </h5>
-                    <p class="card-text">
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nesciunt explicabo iure error ipsum, 
-                        neque et. Tempore facilis autem quam 
-                        id dolor blanditiis perferendis, accusantium nulla atque, iure voluptas aliquam nihil.
-                    </p>
-                    <a href="#" class="btn btn-secondary">En savoir plus !</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card bg-lenght mb-3">
-                <div class="card header text-center">
-                    3 chambres, <strong>49euro / nuit</strong> <br>
-                    <small>Pas encore noté</small>
-                </div>
-                <img src="http://placehold.it/1000x400" alt="Image de l'appartement" style="height:200; width:100%; display:block">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        Appartement de ouf !
-                    </h5>
-                    <p class="card-text">
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nesciunt explicabo iure error ipsum, 
-                        neque et. Tempore facilis autem quam 
-                        id dolor blanditiis perferendis, accusantium nulla atque, iure voluptas aliquam nihil.
-                    </p>
-                    <a href="#" class="btn btn-secondary">En savoir plus !</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card bg-lenght mb-3">
-                <div class="card header text-center">
-                    3 chambres, <strong>49euro / nuit</strong> <br>
-                    <small>Pas encore noté</small>
-                </div>
-                <img src="http://placehold.it/1000x400" alt="Image de l'appartement" style="height:200; width:100%; display:block">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        Appartement de ouf !
-                    </h5>
-                    <p class="card-text">
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nesciunt explicabo iure error ipsum, 
-                        neque et. Tempore facilis autem quam 
-                        id dolor blanditiis perferendis, accusantium nulla atque, iure voluptas aliquam nihil.
-                    </p>
-                    <a href="#" class="btn btn-secondary">En savoir plus !</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row ">
-    
+        {% for ad in ads %}
+            {% include 'ad/_ad.html.twig' with {'ad': ad.annonces }%}
+        {% endfor %}
     </div>
 
     <h2 class="h1 my-5">Nos proprietaires stars !</h2>
     <div class="row mt-5">
-        <div class="col-6">
-            <div class="card border-secondary mb-3">
-                <div class="cardbody">
-                    <h6 class="card-title">Félianho Sagnol</h6><hr>
-                    <div class="card-text">
-                        <img src="http://placehold.it/64x65" class="float-left mr-3" alt="Avatar de f.s">
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus, qui.</p>
-                        <a href="#" class="btn btn-success float-right">En savoir plus !</a>
+        {% for data in users %}
+            <div class="col-6">
+                <div class="card border-secondary mb-3">
+                    <div class="cardbody">
+                        <h6 class="card-title text-center">{{ data.user.firstName}} {{ data.user.lastName}}</h6><hr>
+                        <div class="card-text">
+                            <img src="http://placehold.it/64x65" class="float-left mr-3" alt="Avatar de f.s">
+                            <p>{{data.user.introduction }}</p>
+                            <a href="{{path('user_show',{'slug': data.user.slug})}}" class="btn btn-success float-right">En savoir plus !</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-6">
-            <div class="card border-secondary mb-3">
-                <div class="cardbody">
-                    <h6 class="card-title">Félianho Sagnol</h6><hr>
-                    <div class="card-text">
-                        <img src="http://placehold.it/64x65" class="float-left mr-3" alt="Avatar de f.s">
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus, qui.</p>
-                        <a href="#" class="btn btn-success float-right">En savoir plus !</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}
