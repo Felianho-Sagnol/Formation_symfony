@@ -1,0 +1,1 @@
+web: $(compser config bin-dir)/heroku-php-apache2 public/
